@@ -31,7 +31,7 @@ int main(void) {
     while (1) {
         unsigned char A = PINA & 0xFF;
 
-        /* opting for switch/case statement method from lab partner */
+        /* opting for switch/case statement method from lab partner 
         if ((A == 0x01) || (A == 0x02)){ //if A = 1 or 2 turn on PC5 / also below 4 so PC6
             //C = 0x60; // 01100000
             C = SetBit(C, 6, 1);
@@ -46,8 +46,63 @@ int main(void) {
         }
 
         //low fuel sets P6
-        //*/
+        */
 
+    switch(A) {
+        case 0x00:
+            C = SetBit(C, 6, 1); // low fuel light
+        break;
+        
+        case 0x01: //same result so if we land on 0x01 same result as 0x02
+        case 0x02:
+            C = SetBit(C, 6, 1);
+            C = SetBit(C, 5, 1);
+            break;
+
+        case 0x03:
+        case 0x04:
+            C = SetBit(C, 6, 1);
+            C = SetBit(C, 5, 1);
+            C = SetBit(C, 4, 1);
+            break;
+
+        case 0x05:
+        case 0x06:
+            C = SetBit(C, 5, 1);
+            C = SetBit(C, 4, 1);
+            C = SetBit(C, 3, 1);
+            break;
+
+        case 0x07:
+        case 0x08:
+        case 0x09:
+            C = SetBit(C, 5, 1);
+            C = SetBit(C, 4, 1);
+            C = SetBit(C, 3, 1);
+            C = SetBit(C, 2, 1);
+            break;
+            
+        case 0x0A:
+        case 0x0B:
+        case 0x0C:
+            C = SetBit(C, 5, 1);
+            C = SetBit(C, 4, 1);
+            C = SetBit(C, 3, 1);
+            C = SetBit(C, 2, 1);
+            C = SetBit(C, 1, 1);
+            break;
+
+        case 0x0D:
+        case 0x0E:
+        case 0x0F: //obviously a simple or = will do next time
+            C = SetBit(C, 5, 1);
+            C = SetBit(C, 4, 1);
+            C = SetBit(C, 3, 1);
+            C = SetBit(C, 2, 1);
+            C = SetBit(C, 1, 1);
+            C = SetBit(C, 0, 1);
+            break;          
+        }
 
         PORTC = C;
         C = 0x00;
