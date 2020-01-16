@@ -13,6 +13,13 @@
 #include "simAVRHeader.h"
 #endif
 
+//setbit from zybooks, function definition is confusing but it works
+//will read up on tertiary operator
+unsigned char SetBit(unsigned char x, unsigned char k, unsigned char b) {
+   return (b ?  (x | (0x01 << k))  :  (x & ~(0x01 << k)) );
+              //   Set bit to 1           Set bit to 0
+}
+
 int main(void) {
     /* Insert DDR and PORT initializations */
     DDRA = 0x00; PORTA = 0xFF; //inputs
@@ -24,8 +31,14 @@ int main(void) {
     while (1) {
         unsigned char A = PINA & 0xFF;
 
+        /* opting for switch/case statement method from lab partner */
         if ((A == 0x01) || (A == 0x02)){ //if A = 1 or 2 turn on PC5 / also below 4 so PC6
-            C = 0x60; // 01100000
+            //C = 0x60; // 01100000
+            C = SetBit(C, 6, 1);
+            C = SetBit(C, 5, 1);
+
+            //setbit does not seem that much more efficient
+
         }
 
         if ((A == 0x03) || (A == 0x04)){ //if A = 3 or 4 turn on PC45 / also below 4 so PC6
@@ -33,6 +46,8 @@ int main(void) {
         }
 
         //low fuel sets P6
+        //*/
+
 
         PORTC = C;
         C = 0x00;
